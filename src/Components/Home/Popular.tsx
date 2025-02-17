@@ -24,7 +24,7 @@ const PopularPosts = () => {
   return (
     <div className='m-11'>
       <h2 className="text-4xl font-mono font-bold my-8 ">Popular Posts</h2>
-      <div className="grid gap-15">
+      <div className="grid md:grid-cols-3 gap-15">
         {popularPosts?.map((post: Post) => (
           <Link to={`/post/${post.id}`} key={post.id}>
             <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">

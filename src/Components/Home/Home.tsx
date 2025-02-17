@@ -1,10 +1,10 @@
-import Latest from "./Latest";
+// import Latest from "./Latest";
 import PopularPosts from "./Popular";
 
 const Home = () => {
     return (
       <div>
-        <Latest/>
+        {/* <Latest/> */}
         <PopularPosts/>
       </div>
     );
