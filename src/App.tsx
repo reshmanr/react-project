@@ -1,11 +1,12 @@
 import './App.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Home from './Components/Home'
+import Home from './Components/Home/Home'
 import Travel from './Components/Travel';
 import Food from './Components/Food';
 import Diy from './Components/Diy';
 import Profile from './Components/Profile';
 import Layout from './Components/Layout';
+import PostDetails from './Components/Postdetails/Postdetails';
 
 
 const router = createBrowserRouter([
@@ -17,7 +18,8 @@ const router = createBrowserRouter([
       { path: 'travel', element: <Travel /> },
       { path: 'food', element: <Food /> },
       { path: 'diy', element: <Diy /> },
-      { path: 'login', element: <Profile /> },
+      { path: 'profile', element: <Profile /> },
+      { path: 'post/:id', element:<PostDetails />,}
     ],
   },
 ]);
