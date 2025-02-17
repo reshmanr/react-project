@@ -13,7 +13,7 @@ const Latest=()=>{
     const { data: latestPosts, isLoading,error } =useQuery<Post[]>({
         queryKey: ['latestPosts'],
         queryFn: async () => {
-          const res = await api.get('/?latest=true');
+          const res = await api.get('/blogwebsite?latest=true');
           console.log('API Response:', res.data); 
           return res.data;
         },

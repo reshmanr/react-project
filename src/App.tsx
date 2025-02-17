@@ -7,8 +7,8 @@ import Diy from './Components/Diy';
 import Profile from './Components/Profile';
 import Layout from './Components/Layout';
 import PostDetails from './Components/Postdetails/Postdetails';
-
-
+import SignIn from './Components/Authpage/signin';
+import SignUp from './Components/Authpage/signup';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -19,6 +19,8 @@ const router = createBrowserRouter([
       { path: 'food', element: <Food /> },
       { path: 'diy', element: <Diy /> },
       { path: 'profile', element: <Profile /> },
+      { path: '/signin', element:<SignIn/>},
+      { path: '/signup', element:<SignUp/>},
       { path: 'post/:id', element:<PostDetails />,}
     ],
   },

@@ -1,14 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import PostReducer from './Slices/Postslice';
-
+import authReducer from './Slices/authslice';
 
 const store = configureStore({
-    reducer: {
-      post: PostReducer
-    },
-  });
-  
-  export type RootState = ReturnType<typeof store.getState>;
-  export type AppDispatch = typeof store.dispatch;
-  
-  export default store;
+  reducer: {
+    auth: authReducer,
+  },
+});
+
+
+export default store;

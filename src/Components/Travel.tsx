@@ -19,7 +19,7 @@ const Travel = () => {
   const { data: allPosts, isLoading, error } = useQuery<Post[]>({
     queryKey: ['AllPosts'],
     queryFn: async () => {
-      const res = await api.get('');
+      const res = await api.get('/blogwebsite');
       return res.data;
     }
   });

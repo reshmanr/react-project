@@ -12,7 +12,7 @@ const PopularPosts = () => {
   const { data: popularPosts, isLoading,error  } = useQuery<Post[]>({
     queryKey: ['PopularPosts'],
     queryFn: async () => {
-      const res = await api.get('/?popular=true');
+      const res = await api.get('/blogwebsite?popular=true');
       console.log('API Response:', res.data); 
       return res.data;
     },
