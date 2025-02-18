@@ -1,4 +1,3 @@
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -10,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const signInSchema = z.object({
   email: z.string().email('Invalid email'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
 });
 
 type SignInFormValues = z.infer<typeof signInSchema>;
@@ -35,12 +34,16 @@ const SignIn = () => {
     onSuccess: (data) => {
       if (data.length > 0) {
         const user = data[0];
-        dispatch(signIn({ userId: user.id, username: user.username, email: user.email }));
+        dispatch(signIn({ userId: user.id, username: user.username, email: user.email,likedposts: user.likedpost,bookmarkedposts: user.bookmarkedpost, }));
         navigate('/profile');
       } else {
         alert('Invalid email or password');
       }
-    }
+    },
+    onError: (error) => {
+      console.error('Error during sign in:', error);
+      alert('Invalid email or password');
+    },
   });
 
   const onSubmit = (data: SignInFormValues) => {
@@ -48,7 +51,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4">
+    <div className="max-w-md mx-auto p-4 my-20">
       <h1 className="text-2xl font-bold mb-4">Sign In</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input {...register('email')} placeholder="Email" className="border p-2 w-full mb-2" />

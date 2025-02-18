@@ -2,13 +2,16 @@ import { useSelector,useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut } from '../Redux/Slices/authslice';
 import api from '../Service/api';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
 
 const Profile = () => {
   
-  const { isAuthenticated, username, email,userId } = useSelector((state: any) => state.auth)
+  const { isAuthenticated, username, email,userId,likedposts, bookmarkedposts } = useSelector((state: any) => state.auth)
 
   const dispatch = useDispatch();
   const navigate=useNavigate();
+  const queryClient=useQueryClient();
 
   const handleLogout = () => {
     dispatch(signOut());
@@ -28,6 +31,34 @@ const Profile = () => {
       alert("Failed to delete account");
     }
   };
+
+  const { data: myPosts, isLoading, error} = useQuery({
+    queryKey: ['myPosts', username],
+    queryFn: async () => {
+      try {
+        const res = await api.get(`/blogwebsite?author=${username}`);
+        return res.data;
+      } catch (err: any) {
+        if (err.response && err.response.status === 404) {
+          return []; 
+        }
+        throw err;
+      }
+    },
+    enabled: !!username,
+  });
+
+  const deletePostMutation = useMutation({
+    mutationFn: async (postId: string) => {
+      await api.delete(`/blogwebsite/${postId}`);
+      return postId;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['myPosts', username] });
+     
+    },
+  });
+
 
   if (!isAuthenticated) {
     return (
@@ -54,7 +85,81 @@ const Profile = () => {
       <p>
         <strong>Email:</strong> {email}
       </p>
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Liked Posts</h2>
+        {likedposts && likedposts.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {likedposts.map((post: any) => (
+              <div key={post.id} className="w-24">
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-24 object-cover rounded"
+                />
+                <p className="text-xs text-center">{post.title}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No liked posts.</p>
+        )}
+      </div>
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Bookmarked Posts</h2>
+        {bookmarkedposts && bookmarkedposts.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {bookmarkedposts.map((post: any) => (
+              <div key={post.id} className="w-24">
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-24 object-cover rounded"
+                />
+                <p className="text-xs text-center">{post.title}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No bookmarked posts.</p>
+        )}
+      </div>
      
+      <div className="mt-4">
+        <Link 
+          to="/create-post" 
+          className="bg-blue-500 text-white px-4 py-2 rounded inline-block"
+        >
+          Create Post
+        </Link>
+      </div>
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">My Posts</h2>
+        {isLoading ? (
+          <p>Loading posts...</p>
+        ) : error ? (
+          <p>Error loading posts.</p>
+        ) : myPosts && myPosts.length > 0 ? (
+          <ul className="space-y-2">
+            {myPosts.map((post: any) => (
+              <li key={post.id} className="border p-2 rounded flex justify-between items-center">
+                <span className="text-sm">{post.title}</span>
+                <button
+                  onClick={() => deletePostMutation.mutate(post.id)}
+                  className="text-red-500 text-sm"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No posts created yet.</p>
+        )}
+      </div>
+       
       <div className="mt-8 flex gap-4">
         <button onClick={handleLogout} className="bg-gray-500 text-white px-4 py-2 rounded">Logout</button>
         <button onClick={handleDeleteAccount} className="bg-red-500 text-white px-4 py-2 rounded">Delete Account</button>

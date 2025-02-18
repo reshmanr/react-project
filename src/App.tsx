@@ -9,6 +9,8 @@ import Layout from './Components/Layout';
 import PostDetails from './Components/Postdetails/Postdetails';
 import SignIn from './Components/Authpage/signin';
 import SignUp from './Components/Authpage/signup';
+import CreatePost from './Components/Createpost';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -21,7 +23,8 @@ const router = createBrowserRouter([
       { path: 'profile', element: <Profile /> },
       { path: '/signin', element:<SignIn/>},
       { path: '/signup', element:<SignUp/>},
-      { path: 'post/:id', element:<PostDetails />,}
+      { path: 'post/:id', element:<PostDetails />},
+      { path: 'create-post', element: <CreatePost /> }
     ],
   },
 ]);
