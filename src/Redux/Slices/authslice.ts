@@ -51,13 +51,13 @@ const authSlice = createSlice({
       state.bookmarkedposts = [];
     },
     addLikedPost: (state, action: PayloadAction<Post>) => {
-      // Add the post if not already liked (check by id)
+      
       if (!state.likedposts.find(post => post.id === action.payload.id)) {
         state.likedposts.push(action.payload);
       }
     },
     removeLikedPost: (state, action: PayloadAction<string>) => {
-      // Remove by post id
+      
       state.likedposts = state.likedposts.filter(post => post.id !== action.payload);
     },
     addBookmarkedPost: (state, action: PayloadAction<Post>) => {
